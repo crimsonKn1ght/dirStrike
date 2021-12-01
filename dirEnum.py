@@ -1,9 +1,10 @@
 #!/usr/bin/env python
-#this is a directory scanner cum fuzzer but is currently needs some bug fixing.
+
 import requests
 import sys
 import threading
 import argparse
+import urllib3
 from queue import Queue
 
 
@@ -19,6 +20,7 @@ class argcheck:
 		parser.add_argument('-e', '--ext', metavar='', dest='ext', help='Enter extensions to scan (eg., php,html)')
 		parser.add_argument('-t', '--threads', metavar='', dest='threads', help='Enter number of threads')
 		parser.add_argument('-m', '--mode', metavar='', dest='mode', help='choose between FUZZ (fuzzing) or DIR(directory enumeration)')
+		parser.add_argument('-v', '--version', action='version', version='Version: 1.0', help=f'Show version of {sys.argv[0]}')
 		args = parser.parse_args()
 
 		if len(sys.argv) <= 2:
@@ -28,7 +30,7 @@ class argcheck:
 		return args
 
 
-class dirScanner:
+class dirEnum:
 	def __init__(self, ip, wordlist, mode, threads, ext):
 		self.ip = ip
 		self.wordlist = wordlist
@@ -38,36 +40,43 @@ class dirScanner:
 		self.directories = []
 		self.mode = mode
 
+	def banner(self):
+		border = '='*100+'\n'
+		creator = 'DirEnum created by Gourab Roy\nVersion: 1.0\nMeant for legal use only!\n'
+		settings = f'Details:\n==> URL: http://{self.ip}\n==> Wordlist: {self.wordlist}\n==> Threads: {self.threads}\n==> Extensions: {self.ext}\n==> Mode:{self.mode}\n'
+		prologue = '\nStarting Scan:\n'
+		print('\n'+border+creator+border+settings+border+prologue)
+
 	def fuzzer(self):
 		while not self.q.empty():
 			sub = self.q.get()
 			sub_domain = f"http://{sub}.{self.ip}"
-			try:
-				response = requests.get(sub_domain)
-			except requests.ConnectionError:
-				pass
-			else:
-				print(sub_domain,"                [Status code:",response.status_code,"]")
-
+			self.check(sub_domain)
 
 	def dirScan(self):
 		while not self.q.empty():
 			dir = self.q.get()
-			for ext in self.ext.split():
-				site = f"http://{self.ip}/{dir}.{ext.strip()}"
+			site = f"http://{self.ip}/{dir}"
+			self.check(site)
+			if self.ext != None:
+				for ext in self.ext.split(','):
+					site = f"http://{self.ip}/{dir}.{ext.strip()}"
+					self.check(site)
 				
-	def check(self):
-		response = requests.get(site, verify=False)
-			if response.status_code==404:
-				pass
-			else:
-				self.directories.append(url)
-				print(url,"                [Status code:",response.status_code,"]")
+	def check(self, site):
+		try: 
+			response = requests.get(site, verify=False)
+		except requests.ConnectionError:
+			pass
+		else:
+			if response.status_code != 404:
+				print("{:<50}                    {:>18}".format("[+] "+site, "[Status code:"+str(response.status_code)+"]"))
 
 	def dirEnum(self):
 		file = open(self.wordlist, 'r')
-		for dir in file.read().split():
-			self.q.put(dir)
+		for dir in file.read().split('\n'):
+			if not dir.startswith('#') and dir != '':
+				self.q.put(dir)
 
 		thread_list = []
 
@@ -76,6 +85,7 @@ class dirScanner:
 				thread = threading.Thread(target=self.dirScan)
 				thread_list.append(thread)
 				thread.start()
+
 		elif self.mode == 'fuzz':
 			for _ in range(int(self.threads)):
 				thread = threading.Thread(target=self.fuzzer)
@@ -88,6 +98,7 @@ class dirScanner:
 
 if __name__=='__main__':
 
+	urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 	arguments = argcheck()
 	args = arguments.Argcheck()
 
@@ -106,5 +117,9 @@ if __name__=='__main__':
 	else:
 		ext = None
 
-	scan = dirScanner(args.url, args.wordlist, mode.lower(), threads, ext)
-	scan.dirEnum()
+	scan = dirEnum(args.url, args.wordlist, mode.lower(), threads, ext)
+	scan.banner()
+	try:
+		scan.dirEnum()
+	except:
+		pass
