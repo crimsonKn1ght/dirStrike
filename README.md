@@ -1,6 +1,16 @@
 # dirEnum
 Python tool for enumerating directories and for fuzzing
 
+Download the tool with following command from shell:
+```
+git clone https://github.com/confusedHatHacker/dirEnum
+```
+
+After cloning change directories and go to dirEnum folder. Run the following command from shell:
+```
+pip install -r requirements.txt
+```
+
 Usage instructions:
 `python dirEnum.py -u <url[:port]> -w <wordlist> [options]`
   
