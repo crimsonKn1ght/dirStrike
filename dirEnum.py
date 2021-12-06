@@ -3,11 +3,9 @@
 import requests
 import sys
 import threading
-from args.arguments import argcheck
-from checker.check import check_site
-from banner.banner import Banner
 import urllib3
 from queue import Queue
+from checker.check import check_site
 
 
 class dirEnum:
@@ -45,7 +43,10 @@ class dirEnum:
 						print("{:<50}                    {:>18}".format("[+] "+site, "[Status code:"+str(response_code)+"]"))
 
 	def dirEnum(self):
-		file = open(self.wordlist, 'r')
+		try:
+			file = open(self.wordlist, 'r')
+		except:
+			file = open(self.wordlist, 'r', enoding='ISO-8859-1')
 		for dir in file.read().split('\n'):
 			if not dir.startswith('#') and dir != '':
 				self.q.put(dir)
@@ -66,35 +67,3 @@ class dirEnum:
 
 		for thread in thread_list:
 			thread.join()
-
-
-if __name__=='__main__':
-
-	urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-	
-	arguments = argcheck()
-	args = arguments.Argcheck()
-
-	if args.mode:
-		mode = args.mode
-	else:
-		mode = 'dir'
-
-	if args.threads:
-		threads = args.threads
-	else:
-		threads = 40
-
-	if args.ext:
-		ext = args.ext
-	else:
-		ext = None
-
-	show_banner = Banner(args.url, args.wordlist, mode.lower(), threads, ext)
-	show_banner.banner()
-
-	scan = dirEnum(args.url, args.wordlist, mode.lower(), threads, ext)
-	try:
-		scan.dirEnum()
-	except Exception as e:
-		print(e)
