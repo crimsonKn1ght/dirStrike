@@ -3,7 +3,7 @@
 
 from args.arguments import argcheck
 from banner.banner import Banner
-from tools.scanner import dirEnum
+from tools.scanner import dirCrack
 import urllib3
 
 
@@ -32,8 +32,8 @@ if __name__=='__main__':
 	show_banner = Banner(args.url, args.wordlist, mode.lower(), threads, ext)
 	show_banner.banner()
 
-	scan = dirEnum(args.url, args.wordlist, mode.lower(), threads, ext)
+	scan = dirCrack(args.url, args.wordlist, mode.lower(), threads, ext)
 	try:
-		scan.dirEnum()
+		scan.dirCrack()
 	except Exception as e:
 		print(e)
