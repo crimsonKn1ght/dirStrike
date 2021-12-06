@@ -1,20 +1,20 @@
-# dirEnum
+# dirHunter
 Python tool for enumerating directories and for fuzzing
 
 Download the tool with following command from shell:
 ```
-git clone https://github.com/confusedHatHacker/dirEnum
+git clone https://github.com/confusedHatHacker/dirHunter
 ```
 
-After cloning change directories and go to dirEnum folder. Run the following command from shell:
+After cloning change directories and go to dirHunter folder. Run the following command from shell:
 ```
 pip install -r requirements.txt
 ```
 
 Usage instructions:
-`python dirEnum.py -u <url[:port]> -w <wordlist> [options]`
+`python dirHunter.py -u <url[:port]> -w <wordlist> [options]`
   
-Optional arguments for dirEnum
+Optional arguments for dirHunter
 
 ```
 optional arguments:
@@ -28,8 +28,8 @@ optional arguments:
 
 Examples:
 ```
-python dirEnum.py -u 192.168.0.1 -w wordlist.txt -m dir -e php,html,txt -t 20
-python dirEnum.py -u 192.168.0.1 -w wordlist.txt -m fuzz -t 20
+python dirHunter.py -u 192.168.0.1 -w wordlist.txt -m dir -e php,html,txt -t 20
+python dirHunter.py -u 192.168.0.1 -w wordlist.txt -m fuzz -t 20
 ```
 
 Please note: For fuzzing change mode with -m option, by default it is in dir mode/does directory enumeration.
