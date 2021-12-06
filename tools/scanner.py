@@ -8,7 +8,7 @@ from queue import Queue
 from checker.check import check_site
 
 
-class dirEnum:
+class dirCrack:
 	def __init__(self, ip, wordlist, mode, threads, ext):
 		self.ip = ip
 		self.wordlist = wordlist
@@ -42,7 +42,7 @@ class dirEnum:
 					if response_code != None:
 						print("{:<50}                    {:>18}".format("[+] "+site, "[Status code:"+str(response_code)+"]"))
 
-	def dirEnum(self):
+	def dirCrack(self):
 		try:
 			file = open(self.wordlist, 'r')
 		except:
