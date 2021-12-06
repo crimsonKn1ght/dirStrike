@@ -1,69 +1,39 @@
 #!/usr/bin/env python
 
-import requests
-import sys
-import threading
+
+from args.arguments import argcheck
+from banner.banner import Banner
+from tools.scanner import dirEnum
 import urllib3
-from queue import Queue
-from checker.check import check_site
 
 
-class dirEnum:
-	def __init__(self, ip, wordlist, mode, threads, ext):
-		self.ip = ip
-		self.wordlist = wordlist
-		self.ext = ext
-		self.threads = threads
-		self.q = Queue()
-		self.directories = []
-		self.mode = mode
-		self.res = check_site()
+if __name__=='__main__':
 
+	urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+	
+	arguments = argcheck()
+	args = arguments.Argcheck()
 
-	def fuzzer(self):
-		while not self.q.empty():
-			sub = self.q.get()
-			sub_domain = f"http://{sub}.{self.ip}"
-			response_code = self.res.check_site(sub_domain)
-			if response_code != None:
-				print("{:<50}                    {:>18}".format("[+] "+sub_domain, "[Status code:"+str(response_code)+"]"))
+	if args.mode:
+		mode = args.mode
+	else:
+		mode = 'dir'
 
-	def dirScan(self):
-		while not self.q.empty():
-			dir = self.q.get()
-			site = f"http://{self.ip}/{dir}"
-			response_code = self.res.check_site(site)
-			if response_code != None:
-				print("{:<50}                    {:>18}".format("[+] "+site, "[Status code:"+str(response_code)+"]"))
-			if self.ext != None:
-				for ext in self.ext.split(','):
-					site = f"http://{self.ip}/{dir}.{ext.strip()}"
-					response_code = self.res.check_site(site)
-					if response_code != None:
-						print("{:<50}                    {:>18}".format("[+] "+site, "[Status code:"+str(response_code)+"]"))
+	if args.threads:
+		threads = args.threads
+	else:
+		threads = 40
 
-	def dirEnum(self):
-		try:
-			file = open(self.wordlist, 'r')
-		except:
-			file = open(self.wordlist, 'r', enoding='ISO-8859-1')
-		for dir in file.read().split('\n'):
-			if not dir.startswith('#') and dir != '':
-				self.q.put(dir)
-		
-		thread_list = []
+	if args.ext:
+		ext = args.ext
+	else:
+		ext = None
 
-		if self.mode == 'dir':
-			for _ in range(int(self.threads)):
-				thread = threading.Thread(target=self.dirScan)
-				thread_list.append(thread)
-				thread.start()
+	show_banner = Banner(args.url, args.wordlist, mode.lower(), threads, ext)
+	show_banner.banner()
 
-		elif self.mode == 'fuzz':
-			for _ in range(int(self.threads)):
-				thread = threading.Thread(target=self.fuzzer)
-				thread_list.append(thread)
-				thread.start()	
-
-		for thread in thread_list:
-			thread.join()
+	scan = dirEnum(args.url, args.wordlist, mode.lower(), threads, ext)
+	try:
+		scan.dirEnum()
+	except Exception as e:
+		print(e)
