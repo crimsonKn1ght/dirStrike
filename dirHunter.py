@@ -29,7 +29,7 @@ if __name__=='__main__':
     else:
         ext = None
 
-    show_banner = Banner(args.url, args.wordlist, mode.lower(), threads, ext)
+    show_banner = Banner(args.url, args.wordlist, threads, ext, mode.lower())
     show_banner.banner()
 
     scan = dirHunter(args.url, args.wordlist, mode.lower(), threads, ext)
