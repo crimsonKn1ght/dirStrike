@@ -25,7 +25,7 @@ class dirHunter:
             sub = self.q.get()
             sub_domain = f"http://{sub}.{self.ip}"
             response_code = self.res.check_site(sub_domain)
-            if response_code != None:
+            if response_code != None and response_code != 404:
                 print("{:<50}                    {:>18}".format("[+] "+sub_domain, "[Status code:"+str(response_code)+"]"))
 
     def dirScan(self):
@@ -33,13 +33,13 @@ class dirHunter:
             dir = self.q.get()
             site = f"http://{self.ip}/{dir}"
             response_code = self.res.check_site(site)
-            if response_code != None:
+            if response_code != None and response_code != 404:
                 print("{:<50}                    {:>18}".format("[+] "+site, "[Status code:"+str(response_code)+"]"))
             if self.ext != None:
                 for ext in self.ext.split(','):
                     site = f"http://{self.ip}/{dir}.{ext.strip()}"
                     response_code = self.res.check_site(site)
-                    if response_code != None:
+                    if response_code != None and response_code != 404:
                         print("{:<50}                    {:>18}".format("[+] "+site, "[Status code:"+str(response_code)+"]"))
 
     def dirHunter(self):
