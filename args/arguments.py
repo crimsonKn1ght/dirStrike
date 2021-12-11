@@ -7,7 +7,7 @@ import sys
 class argcheck:
 	def __init__(self):
 		self.example=\
-		f'example: python {sys.argv[0]} -u 192.168.0.1 -w wordlist.txt -m dir -e php,html,txt -t 20\n 	 python {sys.argv[0]} -u 192.168.0.1 -w wordlist.txt -m fuzz -t 20'
+		f'example: python {sys.argv[0]} -u 192.168.0.1 -w wordlist.txt -m dir -e php,html,txt -t 20\n 	 python {sys.argv[0]} -u 192.168.0.1:443 -w wordlist.txt -m fuzz -t 20'
 
 	def Argcheck(self):
 		parser = argparse.ArgumentParser(description="Tool for web page & directory discovery and also good \nfor fuzzing or sub-domain enumeration", usage=f"python {sys.argv[0]} -u <url[:port]> -w <wordlist> [options]", epilog=self.example, formatter_class=argparse.RawTextHelpFormatter)
