@@ -5,7 +5,7 @@ import sys
 import threading
 import urllib3
 from queue import Queue
-from checker.check import check_site
+from .check import check_site
 
 
 class dirHunter:
