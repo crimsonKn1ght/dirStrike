@@ -3,12 +3,11 @@
 
 from args.arguments import argcheck
 from banner.banner import Banner
-from tools.scanner import dirHunter
+from tools.main import dirHunter
 import urllib3
 
 
 if __name__=='__main__':
-
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     
     arguments = argcheck()
@@ -37,5 +36,3 @@ if __name__=='__main__':
         scan.dirHunter()
     except Exception as e:
         print(e)
-
-	
