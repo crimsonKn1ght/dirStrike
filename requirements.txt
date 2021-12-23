@@ -2,3 +2,4 @@ requests >= 2.25.1
 argparse >= 1.1
 urllib3 >= 1.26.5
 pyfiglet>=0.8.post0
+chardet>=4.0.0
