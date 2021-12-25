@@ -11,7 +11,7 @@ from .fuzzer import Fuzz
 import chardet
 
 
-class dirHunter:
+class dirStrike:
     def __init__(self, ip, wordlist, mode, threads, ext):
         self.ip = ip
         self.wordlist = wordlist
@@ -22,7 +22,7 @@ class dirHunter:
         self.mode = mode
         self.res = check_site()
 
-    def dirHunter(self):
+    def dirStrike(self):
         file = open(self.wordlist, 'rb')
         file_read = file.readlines()
         for Dir in file_read:
