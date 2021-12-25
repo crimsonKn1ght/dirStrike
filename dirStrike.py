@@ -3,7 +3,7 @@
 
 from args.arguments import argcheck
 from banner.banner import Banner
-from tools.main import dirHunter
+from tools.main import dirStrike
 import urllib3
 
 
@@ -31,8 +31,8 @@ if __name__=='__main__':
     show_banner = Banner(args.url, args.wordlist, threads, ext, mode.lower())
     show_banner.banner()
 
-    scan = dirHunter(args.url, args.wordlist, mode.lower(), threads, ext)
+    scan = dirStrike(args.url, args.wordlist, mode.lower(), threads, ext)
     try:
-        scan.dirHunter()
+        scan.dir()
     except Exception as e:
         print(e)
