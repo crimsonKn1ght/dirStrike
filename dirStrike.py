@@ -33,6 +33,6 @@ if __name__=='__main__':
 
     scan = dirStrike(args.url, args.wordlist, mode.lower(), threads, ext)
     try:
-        scan.dir()
+        scan.dirStrike()
     except Exception as e:
         print(e)
