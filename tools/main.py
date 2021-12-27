@@ -32,7 +32,6 @@ class dirStrike:
                     self.q.append(DIR.strip('\n\r'))
 
         test_code = requests.get(self.ip+'/non-existent-site-abcdefghijkblabla', allow_redirects=False).status_code
-        print('done:',test_code)
         if test_code != 404:
             self.code[1] = test_code
 
