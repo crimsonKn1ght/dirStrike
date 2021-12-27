@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 
 import requests
-import sys
 import concurrent.futures
-import urllib3
 import collections
 from .check import check_site
 from .dirscan import Scan
@@ -21,6 +19,7 @@ class dirStrike:
         self.directories = []
         self.mode = mode
         self.res = check_site()
+        self.code = [404, None]
 
     def dirStrike(self):
         file = open(self.wordlist, 'rb')
@@ -31,15 +30,18 @@ class dirStrike:
                 DIR = Dir.decode(detect)
                 if not DIR.startswith('#') and DIR != '':
                     self.q.append(DIR.strip('\n\r'))
-        
-        thread_list = []
+
+        test_code = requests.get(self.ip+'/non-existent-site-abcdefghijkblabla', allow_redirects=False).status_code
+        print('done:',test_code)
+        if test_code != 404:
+            self.code[1] = test_code
 
         if self.mode == 'dir':
-            scan = Scan(self.ip, self.ext)
+            scan = Scan(self.ip, self.ext, self.code)
             with concurrent.futures.ThreadPoolExecutor(max_workers=int(self.threads)) as executor:
             	result = executor.map(scan.dirscan, self.q)
 
         elif self.mode == 'fuzz':
-            fuzz = Fuzz(self.ip)
+            fuzz = Fuzz(self.ip, self.code)
             with concurrent.futures.ThreadPoolExecutor(max_workers=int(self.threads)) as executor:
             	result = executor.map(fuzz.fuzzer, self.q)
