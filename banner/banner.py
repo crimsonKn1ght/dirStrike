@@ -14,7 +14,7 @@ class Banner:
 	def banner(self):
 		banner = pyfiglet.figlet_format('dirStrike', font='slant')
 		border = '='*100+'\n'
-		creator = 'dirStrike created by Gourab Roy(@crimsonKn1ght)\nVersion: 1.0\nMeant for legal use only!\n'
-		settings = f'Details:\n==> URL: http://{self.ip}\n==> Wordlist: {self.wordlist}\n==> Threads: {self.threads}\n==> Extensions: {self.ext}\n==> Mode:{self.mode}\n'
+		creator = 'dirStrike created by Gourab Roy(@crimsonKn1ght)\nVersion: 1.1\nMeant for legal use only!\n'
+		settings = f'Details:\n==> URL: {self.ip}\n==> Wordlist: {self.wordlist}\n==> Threads: {self.threads}\n==> Extensions: {self.ext}\n==> Mode:{self.mode}\n'
 		prologue = '\nStarting Scan:\n'
 		print('\n'+banner+'\n'+border+creator+border+settings+border+prologue)
