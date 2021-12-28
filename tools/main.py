@@ -31,16 +31,12 @@ class dirStrike:
                 if not DIR.startswith('#') and DIR != '':
                     self.q.append(DIR.strip('\n\r'))
 
-        test_code = requests.get(self.ip+'/non-existent-site-abcdefghijkblabla', allow_redirects=False).status_code
-        if test_code != 404:
-            self.code[1] = test_code
-
         if self.mode == 'dir':
-            scan = Scan(self.ip, self.ext, self.code)
+            scan = Scan(self.ip, self.ext)
             with concurrent.futures.ThreadPoolExecutor(max_workers=int(self.threads)) as executor:
-            	result = executor.map(scan.dirscan, self.q)
+            	executor.map(scan.dirScan, self.q)
 
         elif self.mode == 'fuzz':
-            fuzz = Fuzz(self.ip, self.code)
+            fuzz = Fuzz(self.ip)
             with concurrent.futures.ThreadPoolExecutor(max_workers=int(self.threads)) as executor:
-            	result = executor.map(fuzz.fuzzer, self.q)
+            	executor.map(fuzz.fuzzer, self.q)
