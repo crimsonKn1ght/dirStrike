@@ -30,18 +30,8 @@ if __name__=='__main__':
         ext = None
 
     if not args.url.startswith('http://') or not args.url.startswith('https://'):
-        if not args.url.startswith('www.'):
-            url='https://www.'+args.url
-        else:
-            url='https://'+args.url
-    if args.url.startswith('https://') or args.url.startswith('http://'):
-        site=args.url.lstrip('https://')
-        site=site.lstrip('http://')
-        if not site.startswith('www.'):
-            url='https://www.'+site
-        else:
-            url=args.url
-
+        url='http://'+args.url
+    
 
     show_banner = Banner(url, args.wordlist, threads, ext, mode.lower())
     show_banner.banner()
