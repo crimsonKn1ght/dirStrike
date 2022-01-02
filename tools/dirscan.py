@@ -41,5 +41,6 @@ class Enum:
                     a="[+] " + site
                     b="[Status code:" + str(response[2])+"]  ----->  " + response[0]
                     c="    [Status code:" + str(response[1]) + f"]     [Size:{response[3]}]"
-                    d=[[a, b, c]]
-                    print(tabulate(d).strip('- \n'))
+                    if len(b)>100:
+                        b=b[:100]+'\n'+' '*30+f"{b[100:]:<100}"
+                    print(self.row_format.format(a, b, c))
