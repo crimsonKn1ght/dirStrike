@@ -15,9 +15,13 @@ class argcheck:
 		parser.add_argument('-w', '--wordlist', metavar='', dest='wordlist', help='Enter wordlist location')
 		parser.add_argument('-e', '--ext', metavar='', dest='ext', help='Enter extensions to scan (eg., php,html)')
 		parser.add_argument('-t', '--threads', metavar='', dest='threads', help='Enter number of threads')
+		parser.add_argument('-r', '--retries', metavar='', dest='retries', help='No of retries in case of connection error (Default:2)')
+		parser.add_argument('-H', '--headers', metavar='', dest='headers', help='Type in any headers you want to send [eg, -H "{\'User-Agent\':\'name\'}"]')
+		parser.add_argument('-C', '--cookies', metavar='', dest='cookies', help='Type in cookie you want to send [eg, -C "{\'Cookie-name\':\'Cookie-value\'}"]')
+		parser.add_argument('-U', '--user', metavar='', dest='User', help='Type in username for auth')
+		parser.add_argument('-P', '--pass', metavar='', dest='Pass', help='Type in password for auth')
 		parser.add_argument('-m', '--mode', metavar='', dest='mode', help='choose between FUZZ (fuzzing) or DIR(directory enumeration)')
 		parser.add_argument('-v', '--version', action='version', version='Version: 1.0', help=f'Show version of {sys.argv[0]}')
-		parser.add_argument('-R', action='store_true', help='Use without arguments for recursion')
 		args = parser.parse_args()
 
 		if len(sys.argv) <= 2:
